@@ -1,0 +1,8 @@
+C:\Dev\WIP\Loyalty\NCL.Loyalty\bin\Debug\NCL.Loyalty.dll
+C:\Dev\WIP\Loyalty\NCL.Loyalty\bin\Debug\NCL.Loyalty.pdb
+C:\Dev\WIP\Loyalty\NCL.Loyalty\bin\Debug\Newtonsoft.Json.dll
+C:\Dev\WIP\Loyalty\NCL.Loyalty\bin\Debug\Newtonsoft.Json.xml
+C:\Dev\WIP\Loyalty\NCL.Loyalty\obj\Debug\NCL.Loyalty.csprojAssemblyReference.cache
+C:\Dev\WIP\Loyalty\NCL.Loyalty\obj\Debug\NCL.Loyalty.csproj.CopyComplete
+C:\Dev\WIP\Loyalty\NCL.Loyalty\obj\Debug\NCL.Loyalty.dll
+C:\Dev\WIP\Loyalty\NCL.Loyalty\obj\Debug\NCL.Loyalty.pdb

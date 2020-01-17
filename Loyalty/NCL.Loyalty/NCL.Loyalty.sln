@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCL.Loyalty", "NCL.Loyalty.csproj", "{DAB375A3-1C73-407B-9DCF-660C428920EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCL.Loyalty.Tests", "..\NCL.Loyalty.Tests\NCL.Loyalty.Tests.csproj", "{3F2ED8AA-A96C-4746-BAF4-90A086766E8A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DAB375A3-1C73-407B-9DCF-660C428920EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAB375A3-1C73-407B-9DCF-660C428920EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAB375A3-1C73-407B-9DCF-660C428920EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAB375A3-1C73-407B-9DCF-660C428920EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F2ED8AA-A96C-4746-BAF4-90A086766E8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F2ED8AA-A96C-4746-BAF4-90A086766E8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F2ED8AA-A96C-4746-BAF4-90A086766E8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F2ED8AA-A96C-4746-BAF4-90A086766E8A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A8D3E73F-440F-4A3F-872F-9831CAD451C4}
+	EndGlobalSection
+EndGlobal
