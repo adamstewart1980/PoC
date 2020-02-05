@@ -67,23 +67,20 @@ namespace NCL.Loyalty
             }
 
             throw new FileNotFoundException($"{nameof(CardLogPath)}");
-            //read the file
-
-            //look for the line with the token
-
-            //get the card number from the selected line
-
-            //return the card number
-
-            //throw new argument not found exception
-            throw new NotImplementedException();
         }
 
         public bool SendTransactionDetails(Transaction transaction)
         {
             var transactions = new TransactionList { Transactions = new List<Transaction> { transaction } };
 
-            return SendTransactionDetails(transactions);
+            //we failed to send the transaction, save it for a later try
+            if(!SendTransactionDetails(transactions))
+            {
+                AddToRetryList(transaction);
+                return false;
+            }
+
+            return true;
         }
 
         public bool SendTransactionDetails(TransactionList transactions)
