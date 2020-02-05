@@ -37,17 +37,25 @@ namespace NCL.Loyalty.Tests
             cardLogPath = @"";
         }
 
-        [Ignore("because")]
         [Test]
         public void EnsureTransactionsConvertsToJSONCorrectly()
         {
-            var transactions = new TransactionList { Transactions = new List<Transaction> { new Transaction { CardNumber = "abc12345", TransactionID = "1234567890123" } } };
+            var transactions = new TransactionList
+            {
+                Transactions = new List<Transaction>
+                {
+                    new Transaction { CardNumber = "abc12345", TransactionID = "1234567890123" },
+                    new Transaction { CardNumber = "abc98765", TransactionID = "9876543210987" }
+                }
+            };
 
-            var json = Newtonsoft.Json.JsonConvert.SerializeObject(transactions, Newtonsoft.Json.Formatting.Indented);
+            var json = Newtonsoft.Json.JsonConvert.SerializeObject(transactions, Newtonsoft.Json.Formatting.None);
 
             System.Diagnostics.Debug.Write(json);
 
-            Assert.IsTrue(true);
+            var expectedResult = "{\"transactions\":[{\"transactionID\":\"1234567890123\",\"cardNumber\":\"abc12345\"},{\"transactionID\":\"9876543210987\",\"cardNumber\":\"abc98765\"}]}";
+            
+            Assert.IsTrue(expectedResult == json);
         }
 
         [Test]
