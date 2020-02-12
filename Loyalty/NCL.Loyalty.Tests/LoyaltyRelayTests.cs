@@ -163,17 +163,17 @@ namespace NCL.Loyalty.Tests
             Assert.Throws<ArgumentOutOfRangeException>(() => relay.ReadTransactionFile(new List<string> { "UNKNOWN_KEY"}, "sdlkjfsdlkjfsl"));
         }
 
-
-        [Ignore("because")]
         [Test]
         public void EnsureTransactionDetailsSentToEndpoint()
         {
             var relay = new LoyaltyRelay(cardLogPath, retryFilePath);
+            
+            var transactionId = "1000001";
+            var cardNumber = "10000000000001";
+            var hostName = "NDO-TEST";
+            var timeStamp = DateTime.Now;
 
-            var transactionId = string.Empty;
-            var cardNumber = string.Empty;
-
-            Assert.IsTrue(relay.SendTransactionDetails(new Transaction { TransactionID = transactionId, CardNumber = cardNumber }));
+            Assert.IsTrue(relay.SendTransactionDetails(new Transaction { TransactionID = transactionId, CardNumber = cardNumber, HostName = hostName, TimeStamp = timeStamp }));
         }
 
 

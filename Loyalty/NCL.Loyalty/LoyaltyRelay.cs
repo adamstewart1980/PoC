@@ -119,18 +119,13 @@ namespace NCL.Loyalty
         public bool SendTransactionDetails(TransactionList transactions)
         {
             // create a request message
-            var request = new HttpRequestMessage();
-
-            // set the request send method
-            request.Method = HttpMethod.Post;
-
-            // set the request Uri
-            request.RequestUri = new Uri(ConfigurationManager.AppSettings["EndpointMethod"], UriKind.Relative);
+            var request = new HttpRequestMessage(HttpMethod.Post, new Uri(ConfigurationManager.AppSettings["EndpointMethod"], UriKind.Relative));
 
             // add the content type to the headers collection
+            request.Headers.Clear();
             request.Headers.Add("ContentType", "application/json");
-            request.Headers.Add("X-API-KEY ", ConfigurationManager.AppSettings["ApiKey"]);
-
+            request.Headers.Add("X-API-KEY", ConfigurationManager.AppSettings["ApiKey"]);
+            
             // set the body content for the request
             var jsonString = JsonConvert.SerializeObject(transactions, new JsonSerializerSettings { Formatting = Formatting.None });
             request.Content = new StringContent(jsonString);
