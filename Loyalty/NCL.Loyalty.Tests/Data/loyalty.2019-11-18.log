@@ -1,44 +1,4 @@
-{"timestamp":"2019-11-19T13:56:14.963Z","type":"loyalty.nfc_capture","transaction_id":"1048578","loyalty_card":"18329202336722"} 
-{"timestamp":"2019-11-19T13:56:24.339Z","type":"loyalty.nfc_capture","transaction_id":"1048578","loyalty_card":"18329202336722"} 
-{"timestamp":"2019-11-19T13:56:30.363Z","type":"loyalty.nfc_failure","transaction_id":"1048578","loyalty_card":null,"error":"Transaction cancelled because of click"} 
-{"timestamp":"2019-11-19T13:56:34.012Z","type":"loyalty.nfc_failure","transaction_id":"1048578","loyalty_card":null,"error":"Transaction cancelled because of keypress"} 
-{"timestamp":"2019-11-19T13:56:38.078Z","type":"loyalty.nfc_failure","transaction_id":"1048578","loyalty_card":null,"error":"Transaction cancelled because of keypress"} 
-{"timestamp":"2019-11-19T13:56:40.892Z","type":"loyalty.nfc_failure","transaction_id":"1048578","loyalty_card":null,"error":"Transaction cancelled because of click"} 
-{"timestamp":"2019-11-19T13:56:47.951Z","type":"loyalty.nfc_capture","transaction_id":"1048578","loyalty_card":"18329202336722"} 
-{"timestamp":"2019-11-19T13:57:33.535Z","type":"loyalty.nfc_capture","transaction_id":"1048578","loyalty_card":"18329202336722"} 
-{"timestamp":"2019-11-19T13:58:12.505Z","type":"loyalty.nfc_capture","transaction_id":"1048578","loyalty_card":"18329202336722"} 
-{"timestamp":"2019-11-19T13:58:25.524Z","type":"loyalty.nfc_failure","transaction_id":"1048578","loyalty_card":null,"error":"Transaction cancelled because of click"} 
-{"timestamp":"2019-11-19T13:58:29.692Z","type":"loyalty.nfc_failure","transaction_id":"1048578","loyalty_card":null,"error":"Transaction cancelled because of keypress"} 
-{"timestamp":"2019-11-19T13:58:32.718Z","type":"loyalty.nfc_failure","transaction_id":"1048578","loyalty_card":null,"error":"Transaction cancelled because of click"} 
-{"timestamp":"2019-11-19T13:58:35.362Z","type":"loyalty.nfc_failure","transaction_id":"1048578","loyalty_card":null,"error":"Transaction cancelled because of keypress"} 
-{"timestamp":"2019-11-19T13:58:41.520Z","type":"loyalty.nfc_capture","transaction_id":"1048578","loyalty_card":"18329202336722"} 
-{"timestamp":"2019-11-19T13:58:56.898Z","type":"loyalty.nfc_capture","transaction_id":"1048578","loyalty_card":"18329202336722"} 
-{"timestamp":"2019-11-19T13:59:36.226Z","type":"loyalty.nfc_capture","transaction_id":"1048578","loyalty_card":"18329202336722"} 
-{"timestamp":"2019-11-19T13:59:48.350Z","type":"loyalty.nfc_capture","transaction_id":"1048578","loyalty_card":"18329202336722"} 
-{"timestamp":"2019-11-20T11:22:02.172Z","type":"loyalty.nfc_capture","transaction_id":"1048577","loyalty_card":"18329202421833"} 
-{"timestamp":"2019-11-20T11:22:45.053Z","type":"loyalty.nfc_capture","transaction_id":"1048577","loyalty_card":"18329202421833"} 
-{"timestamp":"2019-11-20T11:24:08.077Z","type":"loyalty.nfc_capture","transaction_id":"1048577","loyalty_card":"18329202421833"} 
-{"timestamp":"2019-11-20T11:25:24.352Z","type":"loyalty.nfc_capture","transaction_id":"1048577","loyalty_card":"18329202421833"} 
-{"timestamp":"2019-11-20T11:28:38.212Z","type":"loyalty.nfc_failure","transaction_id":"1048578","loyalty_card":null,"error":"Transaction time out"} 
-{"timestamp":"2019-11-20T11:33:08.415Z","type":"loyalty.nfc_failure","transaction_id":"1048578","loyalty_card":null,"error":"Transaction cancelled because of keypress"} 
-{"timestamp":"2019-11-20T11:33:37.868Z","type":"loyalty.nfc_failure","transaction_id":"1048578","loyalty_card":null,"error":"Transaction cancelled because of click"} 
-{"timestamp":"2019-11-20T11:37:47.399Z","type":"loyalty.nfc_failure","transaction_id":"1048578","loyalty_card":null,"error":"Transaction time out"} 
-{"timestamp":"2019-11-20T11:39:05.028Z","type":"loyalty.nfc_failure","transaction_id":"1048578","loyalty_card":null,"error":"Transaction cancelled because of keypress"} 
-{"timestamp":"2019-11-20T11:39:38.727Z","type":"loyalty.nfc_failure","transaction_id":"1048578","loyalty_card":null,"error":"Transaction cancelled because of click"} 
-{"timestamp":"2019-11-20T11:41:28.900Z","type":"loyalty.nfc_failure","transaction_id":"1048578","loyalty_card":null,"error":"Transaction time out"} 
-{"timestamp":"2019-11-20T11:41:31.923Z","type":"loyalty.nfc_failure","transaction_id":"1048578","loyalty_card":null,"error":"NFC Read failure"} 
-{"timestamp":"2019-11-20T11:41:58.837Z","type":"loyalty.nfc_capture","transaction_id":"1048578","loyalty_card":"18329202421833"} 
-{"timestamp":"2019-11-20T11:43:34.482Z","type":"loyalty.nfc_failure","transaction_id":"1048578","loyalty_card":null,"error":"Transaction cancelled because of click"} 
-{"timestamp":"2019-11-20T11:44:13.043Z","type":"loyalty.nfc_capture","transaction_id":"1048579","loyalty_card":"18329202421833"} 
-{"timestamp":"2019-11-20T11:45:03.180Z","type":"loyalty.nfc_failure","transaction_id":"1048579","loyalty_card":null,"error":"Transaction time out"} 
-{"timestamp":"2019-11-20T11:46:34.781Z","type":"loyalty.nfc_capture","transaction_id":"1048579","loyalty_card":"18329202421833"} 
-{"timestamp":"2019-11-20T12:44:14.091Z","type":"loyalty.nfc_capture","transaction_id":"1048579","loyalty_card":"18329202421833"} 
-{"timestamp":"2019-11-20T12:44:29.087Z","type":"loyalty.nfc_capture","transaction_id":"1048579","loyalty_card":"18329202421833"} 
-{"timestamp":"2019-11-20T12:44:47.714Z","type":"loyalty.nfc_capture","transaction_id":"1048579","loyalty_card":"18329202421833"} 
-{"timestamp":"2019-11-20T12:45:43.762Z","type":"loyalty.nfc_failure","transaction_id":"1048579","loyalty_card":null,"error":"NFC Read failure"} 
-{"timestamp":"2019-11-20T12:46:11.340Z","type":"loyalty.nfc_failure","transaction_id":"1048579","loyalty_card":null,"error":"Transaction time out"} 
-{"timestamp":"2019-11-20T12:46:12.934Z","type":"loyalty.nfc_capture","transaction_id":"1048579","loyalty_card":"18329202421833"} 
-{"timestamp":"2019-11-20T12:46:43.997Z","type":"loyalty.nfc_capture","transaction_id":"1048579","loyalty_card":"18329202421833"} 
-{"timestamp":"2019-11-20T12:47:36.181Z","type":"loyalty.nfc_failure","transaction_id":"1048579","loyalty_card":null,"error":"Transaction time out"} 
-{"timestamp":"2019-11-20T13:11:52.212Z","type":"loyalty.nfc_capture","transaction_id":"1048579","loyalty_card":"18329202421833"} 
-{"timestamp":"2019-11-21T13:52:15.187Z","type":"loyalty.nfc_failure","transaction_id":"1048577","loyalty_card":null,"error":"Transaction cancelled because of click"} 
+{"timestamp":"2019-11-19T13:56:14.963Z","type":"loyalty.nfc_capture","transaction_id":"1048578","loyalty_card":"18329202336722"}
+{"timestamp":"2019-11-20T11:22:02.172Z","type":"loyalty.nfc_capture","transaction_id":"1048577","loyalty_card":"18329202421833"}
+{"timestamp":"2019-11-20T11:41:58.837Z","type":"loyalty.nfc_capture","transaction_id":"1048578","loyalty_card":"18329202421833"}
+{"timestamp":"2019-11-20T11:44:13.043Z","type":"loyalty.nfc_capture","transaction_id":"1048579","loyalty_card":"18329202421833"}

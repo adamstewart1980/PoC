@@ -47,12 +47,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LoyaltyRelay.cs" />
+    <Compile Include="Model\LogFileLine.cs" />
     <Compile Include="Model\Transaction.cs" />
     <Compile Include="Model\TransactionList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include=".gitignore" />
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>

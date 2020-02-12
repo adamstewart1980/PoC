@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.Runtime.Serialization;
 
 namespace NCL.Loyalty.Model
 {
@@ -10,5 +11,11 @@ namespace NCL.Loyalty.Model
 
         [DataMember(Name = "cardNumber")]
         public string CardNumber { get; set; }
+
+        [DataMember(Name = "timeStamp")]
+        public DateTime TimeStamp { get; set; }
+
+        [DataMember(Name = "hostName")]
+        public string HostName { get; set; }
     }
 }

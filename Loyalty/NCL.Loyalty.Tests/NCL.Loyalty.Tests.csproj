@@ -67,7 +67,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Data\loyalty.2019-11-18.log" />
+    <None Include="App.config" />
+    <None Include="Data\loyalty.2019-11-18.log">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

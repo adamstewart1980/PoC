@@ -7,14 +7,17 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NCL.Loyalty
 {
     public class LoyaltyRelay
     {
         private HttpClient httpClient;
+
+        public const string TransactionFile_Keys_CardNumber = "loyalty_card";
+        public const string TransactionFile_Keys_TimeStamp = "timestamp";
+        public const string TransactionFile_Keys_TransactionType = "type";
+        public const string TransactionFile_Keys_TransactionId = "transaction_id";
 
         private string CardLogPath { get; set; }
         private string RetryListPath { get; set; }
@@ -28,26 +31,55 @@ namespace NCL.Loyalty
             this.httpClient.DefaultRequestHeaders.Accept.Clear();
         }
 
-        public string GetCardNumberForTransaction(string transactionId)
+        public Dictionary<string, string> ReadTransactionFile(List<string> fileKeys, string transactionId)
         {
+            if(fileKeys == null || !fileKeys.Any())
+            {
+                throw new ArgumentException($"Must pass at least one fileKey to read from the logFile. {nameof(fileKeys)} is null or empty");
+            }
+
+            if(string.IsNullOrWhiteSpace(transactionId))
+            {
+                throw new ArgumentNullException(nameof(transactionId));
+            }
+
             if(File.Exists(this.CardLogPath))
             {
+                var result = new Dictionary<string, string> { };
+
                 using(var reader = new StreamReader(this.CardLogPath))
                 {
                     var magicString = $",\"type\":\"loyalty.nfc_capture\",\"transaction_id\":\"{transactionId}\",\"loyalty_card\":\"";
                     var line = reader.ReadLine();
-                    var cardNumber = "";
-
+                    
                     while (line != null)
                     {
                         //find the one line we are looking for
                         if (line.Contains(magicString))
                         {
-                            var startIndex = line.IndexOf("loyalty_card");
-                            startIndex += "loyalty_card\":\"".Length;
-                            var snippet = line.Substring(startIndex, line.Length - startIndex);
-                            snippet = snippet.Substring(0, snippet.IndexOf("\""));
-                            cardNumber = snippet;
+                            var jsonLine = JsonConvert.DeserializeObject<LogFileLine>(line);
+
+                            foreach(var fileKey in fileKeys)
+                            {
+                                switch (fileKey)
+                                {
+                                    case TransactionFile_Keys_CardNumber:
+                                        result[fileKey] = jsonLine.LoyaltyCardNumber;
+                                        break;
+                                    case TransactionFile_Keys_TimeStamp:
+                                        result[fileKey] = jsonLine.TimeStamp;
+                                        break;
+                                    case TransactionFile_Keys_TransactionType:
+                                        result[fileKey] = jsonLine.TransactionType;
+                                        break;
+                                    case TransactionFile_Keys_TransactionId:
+                                        result[fileKey] = jsonLine.TransactionId;
+                                        break;
+                                    default:
+                                        throw new ArgumentOutOfRangeException(nameof(fileKey), fileKey, $"Value is not expected as a key in the log file. Please check format");
+                                }
+                            }
+
                             line = null;
                         }
                         else
@@ -57,12 +89,13 @@ namespace NCL.Loyalty
                         }
                     }
 
-                    if(string.IsNullOrWhiteSpace(cardNumber))
+                    //throw if we didnt find the card number in the file for the given transaction id
+                    if(!result.ContainsKey(fileKeys[0]) || string.IsNullOrWhiteSpace(result[fileKeys[0]]))
                     {
-                        throw new ArgumentOutOfRangeException("TransactionId");
+                        throw new ArgumentOutOfRangeException(nameof(transactionId), $"Couldn't find line in logFile for supplied {nameof(transactionId)}: {transactionId}");
                     }
 
-                    return cardNumber;
+                    return result;
                 }
             }
 
