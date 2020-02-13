@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("NCL.Loyalty")]
+[assembly: AssemblyTitle("ncl.app.Loyalty.Aloha.Relay")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("HP Inc.")]
-[assembly: AssemblyProduct("NCL.Loyalty")]
-[assembly: AssemblyCopyright("Copyright © HP Inc. 2020")]
+[assembly: AssemblyCompany("Nandos")]
+[assembly: AssemblyProduct("ncl.app.Loyalty.Aloha.Relay")]
+[assembly: AssemblyCopyright("Copyright © Nandos 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

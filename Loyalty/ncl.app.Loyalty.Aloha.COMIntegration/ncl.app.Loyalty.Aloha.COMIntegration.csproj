@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <RegisterForComInterop>true</RegisterForComInterop>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,7 +32,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Interop.INTERCEPTACTIVITYLib, Version=5.3.26.131, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>Interop\Interop.INTERCEPTACTIVITYLib.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -43,6 +50,19 @@
   <ItemGroup>
     <Compile Include="AlohaEventIntercept.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SrDebout.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Interop\Interop.INTERCEPTACTIVITYLib.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ncl.app.Loyalty.Aloha.Relay\ncl.app.Loyalty.Aloha.Relay.csproj">
+      <Project>{dab375a3-1c73-407b-9dcf-660c428920ef}</Project>
+      <Name>ncl.app.Loyalty.Aloha.Relay</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

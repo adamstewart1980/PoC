@@ -7,11 +7,12 @@
     <ProjectGuid>{DAB375A3-1C73-407B-9DCF-660C428920EF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NCL.Loyalty</RootNamespace>
-    <AssemblyName>NCL.Loyalty</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <RootNamespace>ncl.app.Loyalty.Aloha.Relay</RootNamespace>
+    <AssemblyName>ncl.app.Loyalty.Aloha.Relay</AssemblyName>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -46,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LoyaltyOrchestrator.cs" />
     <Compile Include="LoyaltyRelay.cs" />
     <Compile Include="Model\LogFileLine.cs" />
     <Compile Include="Model\Transaction.cs" />

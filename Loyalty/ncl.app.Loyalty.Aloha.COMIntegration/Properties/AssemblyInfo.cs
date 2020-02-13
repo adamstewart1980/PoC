@@ -8,16 +8,16 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("ncl.app.Loyalty.Aloha.COMIntegration")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("HP Inc.")]
+[assembly: AssemblyCompany("Nandos")]
 [assembly: AssemblyProduct("ncl.app.Loyalty.Aloha.COMIntegration")]
-[assembly: AssemblyCopyright("Copyright © HP Inc. 2020")]
+[assembly: AssemblyCopyright("Copyright © Nandos. 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
 // to COM components.  If you need to access a type in this assembly from
 // COM, set the ComVisible attribute to true on that type.
-[assembly: ComVisible(false)]
+[assembly: ComVisible(true)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("a5403a6f-400e-4bc2-a9e5-4445e5357ada")]
