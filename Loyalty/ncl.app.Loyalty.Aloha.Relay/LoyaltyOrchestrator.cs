@@ -21,7 +21,7 @@ namespace NCL.Loyalty
                 var relay = new LoyaltyRelay(cardLogPath, retryListPath);
                 var fileKeys = new List<string> { LoyaltyRelay.TransactionFile_Keys_CardNumber, LoyaltyRelay.TransactionFile_Keys_TimeStamp };
 
-                var data = relay.ReadTransactionFile(fileKeys, transactionId);
+                var data = relay.ReadTransactionFile(fileKeys, "1048577" /*transactionId*/); //TODO:[ADAM] remove this after test
 
                 var transactions = new TransactionList
                 {

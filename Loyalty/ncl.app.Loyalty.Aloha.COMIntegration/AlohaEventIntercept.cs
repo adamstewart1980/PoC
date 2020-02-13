@@ -571,7 +571,7 @@ namespace ncl.app.Loyalty.Aloha.COMIntegration
                 {
                     var result = orchestrator.SendTransactionsAsync(cardLogPath, retryListPath, CheckId.ToString());
 
-                    SrDebout.WriteDebout($"{nameof(PostCloseCheck)}:: {nameof(SourceTermId)}:{SourceTermId},{nameof(EmployeeId)}:{EmployeeId},{nameof(QueueId)}:{QueueId},{nameof(TableId)}:{TableId},{nameof(CheckId)}:{CheckId}, Result was :: {result.ToString()}", SrDebout.DeboutLevel.LogAlways);
+                    SrDebout.WriteDebout($"{nameof(PostCloseCheck)}:: {nameof(SourceTermId)}:{SourceTermId},{nameof(EmployeeId)}:{EmployeeId},{nameof(QueueId)}:{QueueId},{nameof(TableId)}:{TableId},{nameof(CheckId)}:{CheckId}, Result was :: {result.Result.ToString()}", SrDebout.DeboutLevel.LogAlways);
                 });
             }
             catch(Exception ex)
