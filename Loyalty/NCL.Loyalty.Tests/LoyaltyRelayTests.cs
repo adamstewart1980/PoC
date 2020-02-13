@@ -1,5 +1,6 @@
 ﻿using Moq;
-using NCL.Loyalty.Model;
+using ncl.app.Loyalty.Aloha.Relay;
+using ncl.app.Loyalty.Aloha.Relay.Model;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 
-namespace NCL.Loyalty.Tests
+namespace ncl.app.Loyalty.Aloha.Tests
 {
     [TestFixture]
     public class LoyaltyRelayTests

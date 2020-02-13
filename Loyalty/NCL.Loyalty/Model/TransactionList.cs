@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace NCL.Loyalty.Model
+namespace ncl.app.Loyalty.Aloha.Relay.Model
 {
     [DataContract]
     public class TransactionList

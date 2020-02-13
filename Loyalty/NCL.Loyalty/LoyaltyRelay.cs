@@ -1,4 +1,4 @@
-﻿using NCL.Loyalty.Model;
+﻿using ncl.app.Loyalty.Aloha.Relay.Model;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 
-namespace NCL.Loyalty
+namespace ncl.app.Loyalty.Aloha.Relay
 {
     public class LoyaltyRelay
     {

@@ -74,9 +74,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NCL.Loyalty\NCL.Loyalty.csproj">
+    <ProjectReference Include="..\NCL.Loyalty\ncl.app.Loyalty.Aloha.Relay.csproj">
       <Project>{dab375a3-1c73-407b-9dcf-660c428920ef}</Project>
-      <Name>NCL.Loyalty</Name>
+      <Name>ncl.app.Loyalty.Aloha.Relay</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
