@@ -31,7 +31,7 @@ namespace NCL.Loyalty
                         {
                             CardNumber = data[LoyaltyRelay.TransactionFile_Keys_CardNumber],
                             TimeStamp = DateTime.Parse(data[LoyaltyRelay.TransactionFile_Keys_TimeStamp]),
-                            HostName = "DUMMY_HOST_NAME", //TODO:[ADAM] Get the host name from somewhere
+                            HostName = Environment.MachineName,// "DUMMY_HOST_NAME", //TODO:[ADAM] Get the host name from somewhere
                             TransactionID = transactionId
                         }
                     }
