@@ -1,0 +1,4 @@
+{"timestamp":"2019-11-19T13:56:14.963Z","type":"loyalty.nfc_capture","transaction_id":"1048578","loyalty_card":"18329202336722"}
+{"timestamp":"2019-11-20T11:22:02.172Z","type":"loyalty.nfc_capture","transaction_id":"1048577","loyalty_card":"18329202421833"}
+{"timestamp":"2019-11-20T11:41:58.837Z","type":"loyalty.nfc_capture","transaction_id":"1048578","loyalty_card":"18329202421833"}
+{"timestamp":"2019-11-20T11:44:13.043Z","type":"loyalty.nfc_capture","transaction_id":"1048579","loyalty_card":"18329202421833"}
