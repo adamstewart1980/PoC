@@ -1,23 +1,71 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Interop.INTERCEPTACTIVITYLib;
-using ncl.app.Loyalty.Aloha.Relay;
+﻿using Interop.INTERCEPTACTIVITYLib;
+using ncl.app.Loyalty.Aloha.Relay.Interfaces;
 using ncl.app.Loyalty.Aloha.Relay.Model;
 using NCL.Loyalty;
+using Newtonsoft.Json;
+using System;
+using System.IO;
+using System.Reflection;
+using System.Threading.Tasks;
 
 namespace ncl.app.Loyalty.Aloha.COMIntegration
 {
     public class AlohaEventIntercept : IInterceptAlohaActivityVer2_30
     {
+        private Configuration InterceptConfiguration { get; set; }
+        private ILogWriter LogWriter { get; set; }
+
         public AlohaEventIntercept()
         {
-            SrDebout.WriteDebout($"{nameof(AlohaEventIntercept)}", SrDebout.DeboutLevel.LogAlways);
+            var location = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            
+            var config = File.ReadAllText(Path.Combine(location, "appsettings.json"));
+            InterceptConfiguration = JsonConvert.DeserializeObject<Configuration>(config);
+
+            this.LogWriter = new LogWriter();
+            this.LogWriter.WriteLog($"{nameof(AlohaEventIntercept)}");
         }
 
+        public void Startup(int SourceTermId, int hMainWnd)
+        {
+            this.LogWriter.WriteLog($"{nameof(Startup)}");
+        }
+
+        public void InitializationComplete(int SourceTermId)
+        {
+            this.LogWriter.WriteLog($"{nameof(InitializationComplete)}");
+        }
+
+        public void Shutdown(int SourceTermId)
+        {
+            this.LogWriter.WriteLog($"{nameof(Shutdown)}");
+        }
+
+        public void PostCloseCheck(int SourceTermId, int EmployeeId, int QueueId, int TableId, int CheckId)
+        {
+            this.LogWriter.WriteLog($"{nameof(PostCloseCheck)} with {nameof(SourceTermId)}:{SourceTermId},{nameof(EmployeeId)}:{EmployeeId},{nameof(QueueId)}:{QueueId},{nameof(TableId)}:{TableId},{nameof(CheckId)}:{CheckId},");
+            
+            var cardLogPath = InterceptConfiguration.AppSettings.CardLogPath;
+            var retryListPath = InterceptConfiguration.AppSettings.RetryListPath;
+
+            var orchestrator = new LoyaltyOrchestrator(this.InterceptConfiguration, this.LogWriter);
+
+            try
+            {
+                Task.Run(() =>
+                {
+                    var result = orchestrator.SendTransactionsAsync(CheckId.ToString());
+                    var didItWork = result.Result;
+                    this.LogWriter.WriteLog($"{nameof(PostCloseCheck)}:: {nameof(SourceTermId)}:{SourceTermId},{nameof(EmployeeId)}:{EmployeeId},{nameof(QueueId)}:{QueueId},{nameof(TableId)}:{TableId},{nameof(CheckId)}:{CheckId}, Result was :: {(didItWork.HasValue ? didItWork.ToString() : "TRANSACTION NOT FOUND IN LOG - MUST BE NO CARD SCAN")}");
+                });
+            }
+            catch (Exception ex)
+            {
+                this.LogWriter.WriteLog($"Error in {nameof(PostCloseCheck)}:: {nameof(SourceTermId)}:{SourceTermId},{nameof(EmployeeId)}:{EmployeeId},{nameof(QueueId)}:{QueueId},{nameof(TableId)}:{TableId},{nameof(CheckId)}:{CheckId}. Exception was {ex.Message} \r\n {ex.StackTrace}");
+            }
+        }
+
+        #region Ignored
         public void LogIn(int SourceTermId, int EmployeeId, string Name)
         {
             //SrDebout.WriteDebout($"{nameof(LogIn)}", SrDebout.DeboutLevel.LogAlways);
@@ -168,21 +216,6 @@ namespace ncl.app.Loyalty.Aloha.COMIntegration
             //SrDebout.WriteDebout($"{nameof(Custom)}", SrDebout.DeboutLevel.LogAlways);
         }
 
-        public void Startup(int SourceTermId, int hMainWnd)
-        {
-            SrDebout.WriteDebout($"{nameof(Startup)}", SrDebout.DeboutLevel.LogAlways);
-        }
-
-        public void InitializationComplete(int SourceTermId)
-        {
-            SrDebout.WriteDebout($"{nameof(InitializationComplete)}", SrDebout.DeboutLevel.LogAlways);
-        }
-
-        public void Shutdown(int SourceTermId)
-        {
-            SrDebout.WriteDebout($"{nameof(Shutdown)}", SrDebout.DeboutLevel.LogAlways);
-        }
-
         public void CarryoverId(int SourceTermId, int Type, int OldId, int NewId)
         {
             //SrDebout.WriteDebout($"{nameof(CarryoverId)}", SrDebout.DeboutLevel.LogAlways);
@@ -200,7 +233,7 @@ namespace ncl.app.Loyalty.Aloha.COMIntegration
 
         public void OnClockTick(int SourceTermId)
         {
-            ////SrDebout.WriteDebout($"{nameof(OnClockTick)}", SrDebout.DeboutLevel.LogAlways);
+            //SrDebout.WriteDebout($"{nameof(OnClockTick)}", SrDebout.DeboutLevel.LogAlways);
         }
 
         public void PreModifyItem(int SourceTermId, int EmployeeId, int QueueId, int TableId, int CheckId, int EntryId)
@@ -558,27 +591,6 @@ namespace ncl.app.Loyalty.Aloha.COMIntegration
             //SrDebout.WriteDebout($"{nameof(LoyaltyCardAppliedToCheck)}", SrDebout.DeboutLevel.LogAlways);
         }
 
-        public void PostCloseCheck(int SourceTermId, int EmployeeId, int QueueId, int TableId, int CheckId)
-        {
-            var cardLogPath = ConfigurationManager.AppSettings["CardLogPath"];
-            var retryListPath = ConfigurationManager.AppSettings["RetryListPath"];
-
-            var orchestrator = new LoyaltyOrchestrator();
-
-            try
-            {
-                Task.Run(() =>
-                {
-                    var result = orchestrator.SendTransactionsAsync(cardLogPath, retryListPath, CheckId.ToString());
-
-                    SrDebout.WriteDebout($"{nameof(PostCloseCheck)}:: {nameof(SourceTermId)}:{SourceTermId},{nameof(EmployeeId)}:{EmployeeId},{nameof(QueueId)}:{QueueId},{nameof(TableId)}:{TableId},{nameof(CheckId)}:{CheckId}, Result was :: {result.Result.ToString()}", SrDebout.DeboutLevel.LogAlways);
-                });
-            }
-            catch(Exception ex)
-            {
-                SrDebout.WriteDebout($"Error in {nameof(PostCloseCheck)}:: {nameof(SourceTermId)}:{SourceTermId},{nameof(EmployeeId)}:{EmployeeId},{nameof(QueueId)}:{QueueId},{nameof(TableId)}:{TableId},{nameof(CheckId)}:{CheckId}. Exception was {ex.Message} \r\n {ex.StackTrace}", SrDebout.DeboutLevel.LogAlways);
-            }
-        }
 
         public void TablesCombined(int SourceTermId, int EmployeeId, int PrimaryTableDefId, int SequenceId, int[] TableDefIdList)
         {
@@ -659,5 +671,6 @@ namespace ncl.app.Loyalty.Aloha.COMIntegration
         {
             //SrDebout.WriteDebout($"{nameof(SystemEventNotifyAllTerminals)}", SrDebout.DeboutLevel.LogAlways);
         }
+        #endregion Ignored
     }
 }

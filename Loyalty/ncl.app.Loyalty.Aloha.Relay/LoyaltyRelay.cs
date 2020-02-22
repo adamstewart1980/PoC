@@ -1,8 +1,8 @@
-﻿using ncl.app.Loyalty.Aloha.Relay.Model;
+﻿using ncl.app.Loyalty.Aloha.Relay.Interfaces;
+using ncl.app.Loyalty.Aloha.Relay.Model;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -19,21 +19,22 @@ namespace ncl.app.Loyalty.Aloha.Relay
         public const string TransactionFile_Keys_TransactionType = "type";
         public const string TransactionFile_Keys_TransactionId = "transaction_id";
 
-        private string CardLogPath { get; set; }
-        private string RetryListPath { get; set; }
+        private Configuration InterceptConfiguration { get; set; }
+        private ILogWriter LogWriter { get; set; }
 
-        public LoyaltyRelay(string cardLogPath, string retryListPath)
+        public LoyaltyRelay(Configuration interceptConfiguration, ILogWriter logWriter)
         {
-            this.CardLogPath = cardLogPath;
-            this.RetryListPath = retryListPath;
+            this.InterceptConfiguration = interceptConfiguration;
+            this.LogWriter = logWriter;
+
             this.httpClient = new HttpClient();
-            this.httpClient.BaseAddress = new Uri(ConfigurationManager.AppSettings["EndpointBaseAddress"]);
+            this.httpClient.BaseAddress = new Uri(this.InterceptConfiguration.AppSettings.EndpointBaseAddress);
             this.httpClient.DefaultRequestHeaders.Accept.Clear();
         }
 
         public Dictionary<string, string> ReadTransactionFile(List<string> fileKeys, string transactionId)
         {
-            if(fileKeys == null || !fileKeys.Any())
+            if (fileKeys == null || !fileKeys.Any())
             {
                 throw new ArgumentException($"Must pass at least one fileKey to read from the logFile. {nameof(fileKeys)} is null or empty");
             }
@@ -43,11 +44,13 @@ namespace ncl.app.Loyalty.Aloha.Relay
                 throw new ArgumentNullException(nameof(transactionId));
             }
 
-            if(File.Exists(this.CardLogPath))
+            this.LogWriter.WriteLog($"Starting {nameof(ReadTransactionFile)}:: with {nameof(fileKeys)}: {String.Join(",", fileKeys)} {nameof(transactionId)}: {transactionId}");
+            
+            if(File.Exists(this.InterceptConfiguration.AppSettings.CardLogPath))
             {
                 var result = new Dictionary<string, string> { };
 
-                using(var reader = new StreamReader(this.CardLogPath))
+                using(var reader = new StreamReader(this.InterceptConfiguration.AppSettings.CardLogPath))
                 {
                     var magicString = $",\"type\":\"loyalty.nfc_capture\",\"transaction_id\":\"{transactionId}\",\"loyalty_card\":\"";
                     var line = reader.ReadLine();
@@ -89,17 +92,22 @@ namespace ncl.app.Loyalty.Aloha.Relay
                         }
                     }
 
-                    //throw if we didnt find the card number in the file for the given transaction id
-                    if(!result.ContainsKey(fileKeys[0]) || string.IsNullOrWhiteSpace(result[fileKeys[0]]))
+                    //return null if we dont find the record in the log file - this should help us shortcut the process
+                    if (!result.ContainsKey(fileKeys[0]) || string.IsNullOrWhiteSpace(result[fileKeys[0]]))
                     {
-                        throw new ArgumentOutOfRangeException(nameof(transactionId), $"Couldn't find line in logFile for supplied {nameof(transactionId)}: {transactionId}");
+                        this.LogWriter.WriteLog($"{nameof(ReadTransactionFile)}:: Returning null because we didnt find transaction {transactionId} in the file");
+
+                        result = null;
                     }
+
+                    this.LogWriter.WriteLog($"Finishing {nameof(ReadTransactionFile)}");
 
                     return result;
                 }
             }
 
-            throw new FileNotFoundException($"{nameof(CardLogPath)}");
+            this.LogWriter.WriteLog($"Finishing {nameof(ReadTransactionFile)}:: Couldn't find file {this.InterceptConfiguration.AppSettings.CardLogPath}");
+            throw new FileNotFoundException($"{nameof(this.InterceptConfiguration.AppSettings.CardLogPath)}");
         }
 
         public bool SendTransactionDetails(Transaction transaction)
@@ -118,13 +126,15 @@ namespace ncl.app.Loyalty.Aloha.Relay
 
         public bool SendTransactionDetails(TransactionList transactions)
         {
+            this.LogWriter.WriteLog($"Starting {nameof(SendTransactionDetails)}:: with {nameof(transactions)}:{transactions.ToString()}");
+            
             // create a request message
-            var request = new HttpRequestMessage(HttpMethod.Post, new Uri(ConfigurationManager.AppSettings["EndpointMethod"], UriKind.Relative));
+            var request = new HttpRequestMessage(HttpMethod.Post, new Uri(this.InterceptConfiguration.AppSettings.EndpointMethod, UriKind.Relative));
 
             // add the content type to the headers collection
             request.Headers.Clear();
             request.Headers.Add("ContentType", "application/json");
-            request.Headers.Add("X-API-KEY", ConfigurationManager.AppSettings["ApiKey"]);
+            request.Headers.Add("X-API-KEY", this.InterceptConfiguration.AppSettings.ApiKey);
             
             // set the body content for the request
             var jsonString = JsonConvert.SerializeObject(transactions, new JsonSerializerSettings { Formatting = Formatting.None });
@@ -137,15 +147,16 @@ namespace ncl.app.Loyalty.Aloha.Relay
             var response = this.httpClient.SendAsync(request).Result;
             if (response.IsSuccessStatusCode)
             {
+                this.LogWriter.WriteLog($"Finishing {nameof(SendTransactionDetails)}:: returning {true}");
+
                 return true;
-                //var json = response.Content.ReadAsStringAsync().Result;
-                //return JsonConvert.DeserializeObject<int>(json);
             }
             else
             {
-                //logger.LogError($"Failed to call {CreatePEDCheckUrl} returning status code: {response.StatusCode} and reason: {response.ReasonPhrase}");
-                //TODO:<Adam> this needs logging throw new ApplicationException(response.ReasonPhrase);
+                this.LogWriter.WriteLog($"Error {nameof(SendTransactionDetails)}:: Failed sending payload. Response was {response.StatusCode}-{response.ReasonPhrase}");
             }
+
+            this.LogWriter.WriteLog($"Finishing {nameof(SendTransactionDetails)}:: returning {true}");
 
             //create httpclient or similar call to endpoint with payload
             return false;
@@ -169,14 +180,14 @@ namespace ncl.app.Loyalty.Aloha.Relay
             var json = JsonConvert.SerializeObject(retryItems);
 
             //write all retry items to the file
-            File.WriteAllText(this.RetryListPath, json);
+            File.WriteAllText(this.InterceptConfiguration.AppSettings.RetryListPath, json);
         }
 
         private TransactionList ReadRetryFile()
         {
-            if(File.Exists(this.RetryListPath))
+            if(File.Exists(this.InterceptConfiguration.AppSettings.RetryListPath))
             {
-                using (StreamReader reader = new StreamReader(this.RetryListPath))
+                using (StreamReader reader = new StreamReader(this.InterceptConfiguration.AppSettings.RetryListPath))
                 {
                     string json = reader.ReadToEnd();
                     return JsonConvert.DeserializeObject<TransactionList>(json);

@@ -64,11 +64,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppSettings.cs" />
+    <Compile Include="ConfigHolder.cs" />
+    <Compile Include="ConfigReaderTests.cs" />
     <Compile Include="LoyaltyRelayTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Data\loyalty.2019-11-18.log">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

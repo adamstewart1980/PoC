@@ -1,6 +1,8 @@
 ﻿using Moq;
 using ncl.app.Loyalty.Aloha.Relay;
+using ncl.app.Loyalty.Aloha.Relay.Interfaces;
 using ncl.app.Loyalty.Aloha.Relay.Model;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -35,14 +37,25 @@ namespace ncl.app.Loyalty.Aloha.Tests
         */
         #endregion
 
-        private string retryFilePath = @"";
-        private string cardLogPath = @"";
+        private Configuration InterceptConfiguration { get; set; }
+        private string cardLogPath = "";
+        private string retryFilePath = "";
+
+        private ILogWriter logWriter;
 
         [SetUp]
         public void SetUp()
         {
-            retryFilePath = @"";
-            cardLogPath = $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\\Data\\loyalty.2019-11-18.log";
+            var location = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string configFilePath = Path.Combine(location, "appsettings.json");
+
+            var config = File.ReadAllText(Path.Combine(location, "appsettings.json"));
+            this.InterceptConfiguration = JsonConvert.DeserializeObject<Configuration>(config);
+
+            this.InterceptConfiguration.AppSettings.RetryListPath = $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}{this.InterceptConfiguration.AppSettings.RetryListPath}";
+            this.InterceptConfiguration.AppSettings.CardLogPath = $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}{this.InterceptConfiguration.AppSettings.CardLogPath}";
+
+            logWriter = new Mock<ILogWriter>().Object;
         }
 
         [Test]
@@ -52,9 +65,9 @@ namespace ncl.app.Loyalty.Aloha.Tests
 
             //just to keep some difference in the times
             Thread.Sleep(2);
-            
+
             var time2 = DateTime.UtcNow;
-            
+
             var transactions = new TransactionList
             {
                 Transactions = new List<Transaction>
@@ -76,14 +89,14 @@ namespace ncl.app.Loyalty.Aloha.Tests
         [Test]
         public void EnsureCanReadLoyaltyLog()
         {
-            var relay = new LoyaltyRelay(cardLogPath, retryFilePath);
+            var relay = new LoyaltyRelay(this.InterceptConfiguration, this.logWriter);
 
             var transactionId = "1048577";
 
-            var keys = new List<string> 
+            var keys = new List<string>
             {
-                LoyaltyRelay.TransactionFile_Keys_CardNumber, 
-                LoyaltyRelay.TransactionFile_Keys_TimeStamp,  
+                LoyaltyRelay.TransactionFile_Keys_CardNumber,
+                LoyaltyRelay.TransactionFile_Keys_TimeStamp,
                 LoyaltyRelay.TransactionFile_Keys_TransactionId,
                 LoyaltyRelay.TransactionFile_Keys_TransactionType
             };
@@ -100,8 +113,8 @@ namespace ncl.app.Loyalty.Aloha.Tests
         [Test]
         public void EnsureExceptionIfLogFileMissing()
         {
-            this.cardLogPath = string.Empty;
-            var relay = new LoyaltyRelay(cardLogPath, retryFilePath);
+            this.InterceptConfiguration.AppSettings.CardLogPath = string.Empty;
+            var relay = new LoyaltyRelay(this.InterceptConfiguration, this.logWriter);
 
             var transactionId = It.IsAny<string>();
 
@@ -114,9 +127,9 @@ namespace ncl.app.Loyalty.Aloha.Tests
         }
 
         [Test]
-        public void EnsureExceptionIfTransactionIdNotFoundInLog()
+        public void EnsureNullIfTransactionIdNotFoundInLog()
         {
-            var relay = new LoyaltyRelay(cardLogPath, retryFilePath);
+            var relay = new LoyaltyRelay(this.InterceptConfiguration, this.logWriter);
 
             var transactionId = "iu794857645897";
 
@@ -128,14 +141,16 @@ namespace ncl.app.Loyalty.Aloha.Tests
                 LoyaltyRelay.TransactionFile_Keys_TransactionType
             };
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => relay.ReadTransactionFile(keys, transactionId));
+            var result = relay.ReadTransactionFile(keys, transactionId);
+
+            Assert.IsNull(result);
         }
 
         [TestCase("")]
         [TestCase("     ")]
         public void EnsureExceptionIfTransactionIdIsNullOrEmpty(string transactionId)
         {
-            var relay = new LoyaltyRelay(cardLogPath, retryFilePath);
+            var relay = new LoyaltyRelay(this.InterceptConfiguration, this.logWriter);
 
             var keys = new List<string>
             {
@@ -148,27 +163,28 @@ namespace ncl.app.Loyalty.Aloha.Tests
         [Test]
         public void EnsureExceptionIfNoFileKeysSent()
         {
-            var relay = new LoyaltyRelay(cardLogPath, retryFilePath);
+            var relay = new LoyaltyRelay(this.InterceptConfiguration, this.logWriter);
 
             var transactionId = "1048577";
-            
+
             Assert.Throws<ArgumentException>(() => relay.ReadTransactionFile(null, transactionId));
             Assert.Throws<ArgumentException>(() => relay.ReadTransactionFile(new List<string> { }, transactionId));
         }
 
         [Test]
-        public void EnsureExceptionIfUnknownKeySent()
+        public void EnsureNullReturnedIfUnknownKeySent()
         {
-            var relay = new LoyaltyRelay(cardLogPath, retryFilePath);
+            var relay = new LoyaltyRelay(this.InterceptConfiguration, this.logWriter);
+            var result = relay.ReadTransactionFile(new List<string> { "UNKNOWN_KEY" }, "sdlkjfsdlkjfsl");
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => relay.ReadTransactionFile(new List<string> { "UNKNOWN_KEY"}, "sdlkjfsdlkjfsl"));
+            Assert.IsNull(result);
         }
 
         [Test]
         public void EnsureTransactionDetailsSentToEndpoint()
         {
-            var relay = new LoyaltyRelay(cardLogPath, retryFilePath);
-            
+            var relay = new LoyaltyRelay(this.InterceptConfiguration, this.logWriter);
+
             var transactionId = "1000001";
             var cardNumber = "10000000000001";
             var hostName = "NDO-TEST";
@@ -182,7 +198,7 @@ namespace ncl.app.Loyalty.Aloha.Tests
         [Test]
         public void EnsureTransactionDetailsLoggedForRetryOnEndpointFailure()
         {
-            var relay = new LoyaltyRelay(cardLogPath, retryFilePath);
+            var relay = new LoyaltyRelay(this.InterceptConfiguration, this.logWriter);
 
             var transactionId = string.Empty;
             var cardNumber = string.Empty;
@@ -197,7 +213,7 @@ namespace ncl.app.Loyalty.Aloha.Tests
         [Test]
         public void EnsureRetryTransactionsSentToEndpoint()
         {
-            var relay = new LoyaltyRelay(cardLogPath, retryFilePath);
+            var relay = new LoyaltyRelay(this.InterceptConfiguration, this.logWriter);
 
             var transactionsForRelay = relay.GetTransactionsForRetry();
 

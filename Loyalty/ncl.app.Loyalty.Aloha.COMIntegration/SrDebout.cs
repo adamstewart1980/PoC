@@ -1,5 +1,8 @@
-﻿using System;
+﻿using ncl.app.Loyalty.Aloha.Relay.Model;
+using Newtonsoft.Json;
+using System;
 using System.IO;
+using System.Reflection;
 
 namespace ncl.app.Loyalty.Aloha.COMIntegration
 {
@@ -14,7 +17,7 @@ namespace ncl.app.Loyalty.Aloha.COMIntegration
 
         static string m_File;
         static StreamWriter m_Debout;
-        static public DeboutLevel m_Level;
+        public static DeboutLevel m_Level;
         //static Mutex m_mutex = new Mutex();
 
         static SrDebout()
@@ -22,12 +25,12 @@ namespace ncl.app.Loyalty.Aloha.COMIntegration
             m_Level = DeboutLevel.LogWarning;
         }
 
-        static public void CloseDebout()
+        public static void CloseDebout()
         {
             m_Debout.Close();
         }
 
-        static public long DeboutSize()
+        public static long DeboutSize()
         {
             if (File.Exists(m_File))
             {
@@ -37,7 +40,7 @@ namespace ncl.app.Loyalty.Aloha.COMIntegration
             return 0;
         }
 
-        static public void DeleteDebout()
+        public static void DeleteDebout()
         {
             if (File.Exists(m_File))
             {
@@ -45,13 +48,13 @@ namespace ncl.app.Loyalty.Aloha.COMIntegration
             }
         }
 
-        static public void WriteDebout(String s, DeboutLevel level)
+        public static void WriteDebout(String s, DeboutLevel level)
         {
             try
             {
                 if (level <= m_Level)
                 {
-                    String outMsg = String.Format("{0:MM/dd/yy HH:mm:ss.fff} {1}: ", DateTime.Now, level.ToString()) + s;
+                    String outMsg = String.Format("{0:dd/MM/yy HH:mm:ss.fff} {1}: ", DateTime.Now, level.ToString()) + s;
                     InitializeStreamWriter();
                     m_Debout.WriteLine(outMsg);
                     m_Debout.Flush();
@@ -62,11 +65,18 @@ namespace ncl.app.Loyalty.Aloha.COMIntegration
             { }
         }
 
-        static public void InitializeStreamWriter()
+        public static void InitializeStreamWriter()
         {
             try
             {
-                string path = @"c:\BootDrv\Aloha\tmp\";
+                var location = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                string configFilePath = Path.Combine(location, "appsettings.json");
+
+                var config = File.ReadAllText(Path.Combine(location, "appsettings.json"));
+                var configuration  = JsonConvert.DeserializeObject<Configuration>(config);
+                string path = configuration.AppSettings.SrDeboutLogFilePath;
+                
+                //path = @"c:\bootdrv\aloha\tmp\";
                 if (!Directory.Exists(path))
                 {
                     Directory.CreateDirectory(path);

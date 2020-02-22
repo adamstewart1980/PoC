@@ -37,6 +37,9 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
       <HintPath>Interop\Interop.INTERCEPTACTIVITYLib.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -49,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AlohaEventIntercept.cs" />
+    <Compile Include="LogWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SrDebout.cs" />
   </ItemGroup>
@@ -56,13 +60,16 @@
     <Content Include="Interop\Interop.INTERCEPTACTIVITYLib.dll" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\ncl.app.Loyalty.Aloha.Relay\ncl.app.Loyalty.Aloha.Relay.csproj">
       <Project>{dab375a3-1c73-407b-9dcf-660c428920ef}</Project>
       <Name>ncl.app.Loyalty.Aloha.Relay</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

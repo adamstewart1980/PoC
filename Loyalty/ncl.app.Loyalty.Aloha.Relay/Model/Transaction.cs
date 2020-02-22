@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.Serialization;
+using System.Text;
 
 namespace ncl.app.Loyalty.Aloha.Relay.Model
 {
@@ -17,5 +18,17 @@ namespace ncl.app.Loyalty.Aloha.Relay.Model
 
         [DataMember(Name = "hostName")]
         public string HostName { get; set; }
+
+        public override string ToString()
+        {
+            var builder = new StringBuilder();
+
+            builder.Append($"{nameof(TransactionID)}={TransactionID}, ");
+            builder.Append($"{nameof(CardNumber)}={CardNumber}, ");
+            builder.Append($"{nameof(TimeStamp)}={TimeStamp}, ");
+            builder.Append($"{nameof(HostName)}={HostName}, ");
+
+            return builder.ToString();
+        }
     }
 }
