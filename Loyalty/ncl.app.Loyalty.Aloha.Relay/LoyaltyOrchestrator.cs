@@ -27,7 +27,7 @@ namespace NCL.Loyalty
                 var relay = new LoyaltyRelay(this.InterceptConfiguration, this.LogWriter);
                 var fileKeys = new List<string> { LoyaltyRelay.TransactionFile_Keys_CardNumber, LoyaltyRelay.TransactionFile_Keys_TimeStamp };
 
-                var data = relay.ReadTransactionFile(fileKeys, "1048577" /*transactionId*/); //TODO:[ADAM] remove this after test
+                var data = relay.ReadTransactionFile(fileKeys, transactionId);
 
                 //make sure we found the card and transactio details in the log file
                 if (data != null)
@@ -42,7 +42,7 @@ namespace NCL.Loyalty
                             {
                                 CardNumber = data[LoyaltyRelay.TransactionFile_Keys_CardNumber],
                                 TimeStamp = DateTime.Parse(data[LoyaltyRelay.TransactionFile_Keys_TimeStamp]),
-                                HostName = Environment.MachineName,// "DUMMY_HOST_NAME", //TODO:[ADAM] Get the host name from somewhere
+                                HostName = Environment.MachineName,
                                 TransactionID = transactionId
                             }
                         }
