@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\DateTimeExtensions.cs" />
     <Compile Include="Interfaces\ILogWriter.cs" />
     <Compile Include="LoyaltyOrchestrator.cs" />
     <Compile Include="LoyaltyRelay.cs" />

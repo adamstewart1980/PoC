@@ -20,7 +20,7 @@ namespace NCL.Loyalty
 
         public async Task<bool?> SendTransactionsAsync(string transactionId)
         {
-            this.LogWriter.WriteLog($"Starting {nameof(SendTransactionsAsync)}:: with {nameof(this.InterceptConfiguration.AppSettings.CardLogPath)}:{this.InterceptConfiguration.AppSettings.CardLogPath}, {nameof(this.InterceptConfiguration.AppSettings.RetryListPath)}:{this.InterceptConfiguration.AppSettings.RetryListPath}, {nameof(transactionId)}:{transactionId}");
+            this.LogWriter.WriteLog($"Starting {nameof(SendTransactionsAsync)}:: with {nameof(this.InterceptConfiguration.AppSettings.FormattedCardLogPath)}:{this.InterceptConfiguration.AppSettings.FormattedCardLogPath}, {nameof(this.InterceptConfiguration.AppSettings.RetryListPath)}:{this.InterceptConfiguration.AppSettings.RetryListPath}, {nameof(transactionId)}:{transactionId}");
             
             return await Task.Run(() =>
             {

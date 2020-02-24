@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using ncl.app.Loyalty.Aloha.Relay.Model;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using System.IO;
 using System.Reflection;
@@ -21,7 +22,7 @@ namespace ncl.app.Loyalty.Aloha.Tests
             string configFilePath = Path.Combine(location, "appsettings.json");
 
             var config = File.ReadAllText(Path.Combine(location, "appsettings.json"));
-            var configuration = JsonConvert.DeserializeObject<ConfigHolder>(config);
+            var configuration = JsonConvert.DeserializeObject<Configuration>(config);
 
             Assert.IsTrue(!string.IsNullOrWhiteSpace(configuration.AppSettings.ApiKey));
             Assert.IsTrue(!string.IsNullOrWhiteSpace(configuration.AppSettings.CardLogPath));

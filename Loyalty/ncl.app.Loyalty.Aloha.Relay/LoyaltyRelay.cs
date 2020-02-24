@@ -46,11 +46,11 @@ namespace ncl.app.Loyalty.Aloha.Relay
 
             this.LogWriter.WriteLog($"Starting {nameof(ReadTransactionFile)}:: with {nameof(fileKeys)}: {String.Join(",", fileKeys)} {nameof(transactionId)}: {transactionId}");
             
-            if(File.Exists(this.InterceptConfiguration.AppSettings.CardLogPath))
+            if(File.Exists(this.InterceptConfiguration.AppSettings.FormattedCardLogPath))
             {
                 var result = new Dictionary<string, string> { };
 
-                using(var reader = new StreamReader(this.InterceptConfiguration.AppSettings.CardLogPath))
+                using(var reader = new StreamReader(this.InterceptConfiguration.AppSettings.FormattedCardLogPath))
                 {
                     var magicString = $",\"type\":\"loyalty.nfc_capture\",\"transaction_id\":\"{transactionId}\",\"loyalty_card\":\"";
                     var line = reader.ReadLine();
@@ -106,8 +106,8 @@ namespace ncl.app.Loyalty.Aloha.Relay
                 }
             }
 
-            this.LogWriter.WriteLog($"Finishing {nameof(ReadTransactionFile)}:: Couldn't find file {this.InterceptConfiguration.AppSettings.CardLogPath}");
-            throw new FileNotFoundException($"{nameof(this.InterceptConfiguration.AppSettings.CardLogPath)}");
+            this.LogWriter.WriteLog($"Finishing {nameof(ReadTransactionFile)}:: Couldn't find file {this.InterceptConfiguration.AppSettings.FormattedCardLogPath}");
+            throw new FileNotFoundException($"{nameof(this.InterceptConfiguration.AppSettings.FormattedCardLogPath)}");
         }
 
         public bool SendTransactionDetails(Transaction transaction)
